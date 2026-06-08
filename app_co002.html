@@ -12,17 +12,19 @@
   .header-sub{color:rgba(255,255,255,0.8);font-size:.7rem;margin-top:2px}
   .card{background:#fff;margin:16px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);overflow:hidden}
   .card-header{background:linear-gradient(135deg,#1a5c2a,#2d8a3e);padding:20px;display:flex;align-items:center;gap:16px}
-  .equipo-icon{background:rgba(255,255,255,.15);border-radius:12px;width:64px;height:64px;display:flex;align-items:center;justify-content:center;font-size:2.2rem}
+  .equipo-icon{background:rgba(255,255,255,.15);border-radius:12px;width:64px;height:64px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;flex-shrink:0}
   .equipo-id{color:#fff;font-size:2rem;font-weight:900;line-height:1}
   .equipo-modelo{color:rgba(255,255,255,.85);font-size:.9rem;margin-top:4px}
   .equipo-ub{color:#f0c040;font-size:.8rem;margin-top:4px}
-  .data-row{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid #f1f5f9}
+  .sec{color:#64748b;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:12px 20px 4px;background:#f8fafc}
+  .data-row{display:flex;justify-content:space-between;align-items:center;padding:13px 20px;border-bottom:1px solid #f1f5f9}
   .data-row:last-child{border-bottom:none}
-  .lbl{color:#64748b;font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-  .val{color:#1e293b;font-size:.9rem;font-weight:700;text-align:right}
-  .big{font-size:1.3rem;color:#1a5c2a}
+  .lbl{color:#64748b;font-size:.8rem;font-weight:600}
+  .val{color:#1e293b;font-size:.88rem;font-weight:700;text-align:right}
+  .big{font-size:1.25rem;color:#1a5c2a}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
   .btn-container{padding:16px;display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
-  .btn{display:flex;align-items:center;gap:14px;padding:18px 20px;border-radius:14px;text-decoration:none;width:100%;text-align:left}
+  .btn{display:flex;align-items:center;gap:14px;padding:18px 20px;border-radius:14px;text-decoration:none;width:100%;text-align:left;cursor:pointer;border:none}
   .btn-h{background:#fff;border:2px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,.06)}
   .btn-n{background:linear-gradient(135deg,#f0c040,#d4a017)}
   .bi{font-size:1.8rem;flex-shrink:0}
@@ -30,7 +32,8 @@
   .btn-n .bt{color:#1a1a00}
   .bs{font-size:.75rem;color:#64748b;margin-top:2px}
   .btn-n .bs{color:rgba(0,0,0,.5)}
-  .footer{text-align:center;padding:16px;color:#94a3b8;font-size:.7rem}
+  .footer{text-align:center;padding:16px;color:#94a3b8;font-size:.7rem;border-top:1px solid #f1f5f9}
+  .chip{display:inline-block;background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:10px;font-size:.7rem;margin-top:4px}
 </style>
 </head>
 <body>
@@ -39,7 +42,7 @@
     <div class="header-logo">▲ SYNGENTA</div>
     <div class="header-sub">Field Equipment LAS · Gestión de Mantenimiento</div>
   </div>
-  <div style="font-size:2rem">🌾</div>
+  <span style="font-size:2rem">🌾</span>
 </div>
 
 <div class="card">
@@ -47,18 +50,48 @@
     <div class="equipo-icon">🌾</div>
     <div>
       <div class="equipo-id">CO002</div>
-      <div class="equipo-modelo">NEW HOLLAND CR 5.85</div>
+      <div class="equipo-modelo">NEW HOLAND CR 5.85</div>
       <div class="equipo-ub">📍 MORETTO</div>
+      <span class="chip">2020 · ENQ 58</span>
     </div>
   </div>
-  <div class="data-row"><span class="lbl">Horas Actuales</span><span class="val big">2.100 hs</span></div>
-  <div class="data-row"><span class="lbl">Últ. Service</span><span class="val">2026-06-03</span></div>
-  <div class="data-row"><span class="lbl">Próx. Service</span><span class="val" style="color:#22c55e">2.349 hs · Faltan 249 hs</span></div>
-  <div class="data-row"><span class="lbl">Sector</span><span class="val">OPERACIONES</span></div>
+
+  <div class="sec">Identificación</div>
+  <div class="data-row"><span class="lbl">N° Serie Motor</span><span class="val">8066370</span></div>
+  <div class="data-row"><span class="lbl">N° Chasis</span><span class="val" style="font-size:.75rem">JHFY3585AKJF13825</span></div>
+  <div class="data-row"><span class="lbl">Usuario</span><span class="val">Ariel Gomez</span></div>
+  <div class="data-row"><span class="lbl">Sector</span><span class="val">TRIALING</span></div>
+
+  <div class="sec">Horas Motor</div>
+  <div class="data-row" style="background:#f0fdf4">
+    <span class="lbl">Horas Actuales</span>
+    <span class="val big">2,100 hs</span>
+  </div>
+  <div class="data-row"><span class="lbl">Últ. Service</span><span class="val">06/05/2026 (2,049 hs)</span></div>
+  <div class="data-row">
+    <span class="lbl">Próx. Service</span>
+    <span class="val" style="color:#22c55e">2,349 hs · Faltan 249 hs</span>
+  </div>
+  <div class="data-row"><span class="lbl">Fecha últ. registro</span><span class="val">03/06/2026</span></div>
+
+  <div class="sec">Seguridad y Certificaciones</div>
+  <div class="data-row">
+    <span class="lbl">Extintores</span>
+    <span class="val"><span class="dot" style="background:#22c55e"></span>02/10/2026</span>
+  </div>
+  <div class="data-row">
+    <span class="lbl">Últ. SAMACO</span>
+    <span class="val">06/03/2026</span>
+  </div>
+  <div class="data-row">
+    <span class="lbl">Próx. SAMACO</span>
+    <span class="val"><span class="dot" style="background:#22c55e"></span>06/03/2027</span>
+  </div>
 </div>
 
 <div class="btn-container">
-  <a href="https://field-equipment.github.io/field-equipment/reporte.html" class="btn btn-h">
+  <a href="https://field-equipment.github.io/field-equipment/reporte.html#equipo=CO002" class="btn btn-h"
+     onclick="localStorage.setItem('eq_filter','CO002');return true;">
     <span class="bi">📋</span>
     <div>
       <div class="bt">Ver Historial de OTs</div>
@@ -74,6 +107,9 @@
   </a>
 </div>
 
-<div class="footer">CO002 · COSECHADORAS · NEW HOLLAND CR 5.85<br>Syngenta Field Equipment LAS</div>
+<div class="footer">
+  CO002 · COSECHADORAS · NEW HOLAND CR 5.85<br>
+  Syngenta Field Equipment LAS
+</div>
 </body>
 </html>

@@ -1030,23 +1030,39 @@ initG();rDesc();
   var eq=m?decodeURIComponent(m[1]):(localStorage.getItem("eq_filter")||"");
   if(eq){
     localStorage.removeItem("eq_filter");
-    var sel=document.getElementById("G_ot");
-    // filtrar por equipo en selector G_tr (implemento)
-    var tr_el=document.getElementById("G_tr")?document.getElementById("G_tr"):null;
-    // Buscar en select de equipo
+
+    // 1. Filtrar pestaña Descripcion por equipo
     var eq_el=document.getElementById("d_e");
     if(eq_el){
-      [...eq_el.options].forEach(function(o){if(o.value===eq)o.selected=true;});
+      [...eq_el.options].forEach(function(o){o.selected=(o.value===eq);});
     }
-    // Aplicar filtro global por equipo en GS
     GS.tr=eq;
     go();
-    // Scroll a descripcion
-    document.getElementById("pg-desc").scrollIntoView();
-    // Mostrar banner
+
+    // 2. Filtrar pestaña Horas Motor - seleccionar solo ese equipo
+    setTimeout(function(){
+      var hTrEl=document.getElementById("h_tr");
+      if(hTrEl){
+        [...hTrEl.options].forEach(function(o){o.selected=(o.value===eq);});
+        if(typeof rHoras==="function") rHoras();
+      }
+    }, 300);
+
+    // 3. Filtrar pestaña Listado de Equipos
+    setTimeout(function(){
+      if(typeof rEquip==="function"){
+        // Guardar el equipo seleccionado para que rEquip lo use
+        window._EQ_AUTO=eq;
+        rEquip();
+      }
+    }, 400);
+
+    // 4. Banner en descripcion
     var cnt=document.getElementById("dCnt");
-    if(cnt){var old=cnt.textContent;
-      cnt.innerHTML='<span style="background:#f0c040;color:#1a1a00;padding:3px 10px;border-radius:12px;font-weight:700;margin-right:8px">⌕ '+eq+'</span>'+old;}
+    if(cnt){
+      var old=cnt.textContent;
+      cnt.innerHTML='<span style="background:#f0c040;color:#1a1a00;padding:3px 10px;border-radius:12px;font-weight:700;margin-right:8px">⊙ '+eq+'</span>'+old;
+    }
   }
 })();
 rAnal();rRot();

@@ -27,13 +27,16 @@
   .btn{display:flex;align-items:center;gap:14px;padding:18px 20px;border-radius:14px;text-decoration:none;width:100%;text-align:left;cursor:pointer;border:none}
   .btn-h{background:#fff;border:2px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,.06)}
   .btn-n{background:linear-gradient(135deg,#f0c040,#d4a017)}
+  .btn-rep{background:linear-gradient(135deg,#1e40af,#2563eb)}
   .bi{font-size:1.8rem;flex-shrink:0}
   .bt{font-size:1rem;font-weight:700;color:#1e293b}
   .btn-n .bt{color:#1a1a00}
+  .btn-rep .bt{color:#fff}
   .bs{font-size:.75rem;color:#64748b;margin-top:2px}
   .btn-n .bs{color:rgba(0,0,0,.5)}
+  .btn-rep .bs{color:rgba(255,255,255,.75)}
   .footer{text-align:center;padding:16px;color:#94a3b8;font-size:.7rem;border-top:1px solid #f1f5f9}
-  .chip{display:inline-block;background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:10px;font-size:.7rem;margin-top:4px}
+  .chip{display:inline-block;background:rgba(255,255,255,.2);color:#fff;padding:2px 8px;border-radius:10px;font-size:.7rem;margin-top:4px}
 </style>
 </head>
 <body>
@@ -79,10 +82,7 @@
     <span class="lbl">Extintores</span>
     <span class="val"><span class="dot" style="background:#22c55e"></span>02/10/2026</span>
   </div>
-  <div class="data-row">
-    <span class="lbl">Últ. SAMACO</span>
-    <span class="val">06/03/2026</span>
-  </div>
+  <div class="data-row"><span class="lbl">Últ. SAMACO</span><span class="val">06/03/2026</span></div>
   <div class="data-row">
     <span class="lbl">Próx. SAMACO</span>
     <span class="val"><span class="dot" style="background:#22c55e"></span>06/03/2027</span>
@@ -98,6 +98,15 @@
       <div class="bs">Todo el reporte filtrado por CO002</div>
     </div>
   </a>
+
+  <a href="https://field-equipment.github.io/repuestos-field-equipment/?equipo=CO002" class="btn btn-rep" target="_blank">
+    <span class="bi">🔧</span>
+    <div>
+      <div class="bt">Stock de Repuestos</div>
+      <div class="bs">Ver repuestos disponibles para CO002</div>
+    </div>
+  </a>
+
   <a href="https://app.smartsheet.com/b/form/4b718295a9fe4fa7bb893b3c54ce42ac" class="btn btn-n" target="_blank">
     <span class="bi">➕</span>
     <div>

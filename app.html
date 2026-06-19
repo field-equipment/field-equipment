@@ -99,8 +99,11 @@ function show(eq,sv){
     card.appendChild(mkSec("Horas Motor"));
     card.appendChild(mkRowH("Horas Actuales",fh(sv.hs),"#f0fdf4"));
     card.appendChild(mkRow("Ult. Service",(sv.dult?ff(sv.dult):"--")+(sv.ult?" ("+fh(sv.ult)+")":"")));
-    var prxEl=mkEl("span"); prxEl.innerHTML=fh(sv.prx)+" &bull; Faltan <b style="color:"+cc+"">"+sv.flt+" hs</b>";
-    card.appendChild(mkRow("Prox. Service",prxEl.innerHTML));
+    var prxEl=mkEl("span");
+    var prxTxt=document.createTextNode(fh(sv.prx)+" • Faltan ");
+    var prxB=mkEl("b"); prxB.style.color=cc; prxB.textContent=sv.flt+" hs";
+    prxEl.appendChild(prxTxt); prxEl.appendChild(prxB);
+    var prxRow=mkEl("div","dr"); var lbP=mkEl("span","lb"); lbP.textContent="Prox. Service"; var vlP=mkEl("span","vl"); vlP.appendChild(prxEl); prxRow.appendChild(lbP); prxRow.appendChild(vlP); card.appendChild(prxRow);
     card.appendChild(mkRow("Fecha ult. registro",sv.dt?ff(sv.dt):"--"));
   }
 

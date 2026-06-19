@@ -1116,13 +1116,18 @@ initG();rDesc();
     GS.tr=eq;
     go();
 
-    // 2. Filtrar pestaña Horas Motor - seleccionar solo ese equipo
-    setTimeout(function(){
-      var hTrEl=document.getElementById("h_tr");
-      if(hTrEl){
-        [...hTrEl.options].forEach(function(o){o.selected=(o.value===eq);});
-        if(typeof rHoras==="function") rHoras();
-      }
+    // 2. Filtrar Horas Motor via GS.eqs y dropdown TAG
+    setTimeout(function(){
+      GS.eqs=[eq];
+      var cbs=document.querySelectorAll("#G_eq_list input[type=checkbox]");
+      cbs.forEach(function(cb){cb.checked=(cb.value===eq);});
+      var allCb=document.getElementById("G_eq_all");
+      if(allCb) allCb.checked=false;
+      var lbl=document.getElementById("G_eq_label");
+      if(lbl) lbl.textContent="1 selec.";
+      var geqEl=document.getElementById("G_eq");
+      if(geqEl){[...geqEl.options].forEach(function(o){o.selected=(o.value===eq);});}
+      if(typeof rHoras==="function") rHoras();
     }, 300);
 
     // 3. Filtrar pestaña Listado de Equipos

@@ -58,6 +58,7 @@ function fmtHs(v){return v?Number(v).toLocaleString("es-AR")+" hs":"—";}
 function fmtFecha(v){return v&&v.length>=10?v.substring(8,10)+"/"+v.substring(5,7)+"/"+v.substring(0,4):"—";}
 function dotColor(f){if(!f||f.length<10)return "#94a3b8";var d=new Date(f),now=new Date(),diff=(d-now)/(1000*60*60*24);return diff<0?"#ef4444":diff<60?"#f59e0b":"#22c55e";}
 function samacoProx(u){if(!u||u.length<10)return{fecha:"—",color:"#94a3b8"};var d=new Date(u);d.setFullYear(d.getFullYear()+1);var iso=d.toISOString().substring(0,10);return{fecha:fmtFecha(iso),color:dotColor(iso)};}
+function setEqFilter(el,e){localStorage.setItem('eq_filter',el.getAttribute('data-eq'));}
 function render(eq,svc){
   var icon=getIcon(eq.grupo||"");
   var chip=(eq.anio?(eq.anio+" · "):"")+(eq.enq||"");
@@ -95,7 +96,7 @@ function render(eq,svc){
     +(eq.grupo?'<div class="data-row"><span class="lbl">Grupo</span><span class="val">'+eq.grupo+'</span></div>':"")
     +horasSection+segSection+'</div>'
     +'<div class="btn-container">'
-    +'<a href="'+REPORTE_URL+'#equipo='+eq.id+'" class="btn btn-h" onclick="localStorage.setItem('eq_filter',eq.id);return true;">'
+    +'<a href="'+REPORTE_URL+'#equipo='+eq.id+'" class="btn btn-h" onclick="setEqFilter(this,event);" data-eq="'+eq.id+'">'
     +'<span class="bi">📋</span><div><div class="bt">Ver Historial de OTs</div><div class="bs">Todo el reporte filtrado por '+eq.id+'</div></div></a>'
     +'<a href="'+SMARTSHEET_FORM+'" class="btn btn-n" target="_blank">'
     +'<span class="bi">➕</span><div><div class="bt">Cargar OT Nueva</div><div class="bs">Registrar nuevo mantenimiento o falla</div></div></a>'

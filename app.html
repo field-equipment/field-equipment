@@ -55,118 +55,72 @@ function gi(g){return IC[g]||IC.DEFAULT;}
 function fh(v){return v?Number(v).toLocaleString("es-AR")+" hs":"--";}
 function ff(v){if(!v||v.length<10)return "--";return v.substring(8,10)+"/"+v.substring(5,7)+"/"+v.substring(0,4);}
 function dc(f){if(!f||f.length<10)return "#94a3b8";var d=new Date(f),n=new Date(),x=(d-n)/86400000;return x<0?"#ef4444":x<60?"#f59e0b":"#22c55e";}
-
-function mkEl(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html)e.innerHTML=html;return e;}
-function mkRow(lbl,val){
-  var d=mkEl("div","dr");
-  var s=mkEl("span","lb"); s.textContent=lbl; d.appendChild(s);
-  var v=mkEl("span","vl"); v.innerHTML=val; d.appendChild(v);
-  return d;
-}
-function mkRowH(lbl,val,bg){
-  var d=mkRow(lbl,val); d.style.background=bg; return d;
-}
-function mkDot(fecha){
-  var s=mkEl("span","dot"); s.style.background=dc(fecha); return s;
-}
-function mkSec(txt){var d=mkEl("div","sec");d.textContent=txt;return d;}
-
+function mk(t,c){var e=document.createElement(t);if(c)e.className=c;return e;}
+function mkRow(l,v){var d=mk("div","dr");var s=mk("span","lb");s.textContent=l;d.appendChild(s);var vv=mk("span","vl");vv.innerHTML=v;d.appendChild(vv);return d;}
+function mkSec(t){var d=mk("div","sec");d.textContent=t;return d;}
+function mkDotSpan(f){var s=mk("span","dot");s.style.background=dc(f);return s;}
 function show(eq,sv){
   var wrap=document.getElementById("C");
-  var card=mkEl("div","card");
-
-  // Header
-  var ch=mkEl("div","ch");
-  var ci=mkEl("div","ci"); ci.innerHTML=gi(eq.grupo); ch.appendChild(ci);
-  var info=mkEl("div");
-  var eid=mkEl("div","eid"); eid.textContent=eq.id; info.appendChild(eid);
-  var emd=mkEl("div","emd"); emd.textContent=(eq.marca||"")+(eq.modelo?" - "+eq.modelo:""); info.appendChild(emd);
-  var eub=mkEl("div","eub"); eub.innerHTML="&#128205; "+(eq.ubic||"--"); info.appendChild(eub);
-  if(eq.anio){var chip=mkEl("span","chip");chip.textContent=eq.anio;info.appendChild(chip);}
-  ch.appendChild(info); card.appendChild(ch);
-
-  // Identificacion
-  card.appendChild(mkSec("Identificación"));
-  if(eq.serie_m) card.appendChild(mkRow("N° Serie Motor",eq.serie_m));
-  if(eq.chasis) card.appendChild(mkRow("N° Chasis",eq.chasis));
-  if(eq.usuario) card.appendChild(mkRow("Usuario",eq.usuario));
-  if(eq.sector) card.appendChild(mkRow("Sector",eq.sector));
-  if(eq.grupo) card.appendChild(mkRow("Grupo",eq.grupo));
-
-  // Horas Motor
+  var card=mk("div","card");
+  var ch=mk("div","ch");
+  var ci=mk("div","ci");ci.innerHTML=gi(eq.grupo);ch.appendChild(ci);
+  var info=mk("div");
+  var eid=mk("div","eid");eid.textContent=eq.id;info.appendChild(eid);
+  var emd=mk("div","emd");emd.textContent=(eq.marca||"")+(eq.modelo?" - "+eq.modelo:"");info.appendChild(emd);
+  var eub=mk("div","eub");eub.innerHTML="&#128205; "+(eq.ubic||"--");info.appendChild(eub);
+  if(eq.anio){var chip=mk("span","chip");chip.textContent=eq.anio;info.appendChild(chip);}
+  ch.appendChild(info);card.appendChild(ch);
+  card.appendChild(mkSec("Identificacion"));
+  if(eq.serie_m)card.appendChild(mkRow("N Serie Motor",eq.serie_m));
+  if(eq.chasis)card.appendChild(mkRow("N Chasis",eq.chasis));
+  if(eq.usuario)card.appendChild(mkRow("Usuario",eq.usuario));
+  if(eq.sector)card.appendChild(mkRow("Sector",eq.sector));
+  if(eq.grupo)card.appendChild(mkRow("Grupo",eq.grupo));
   if(sv){
     var cc=sv.cond==="REALIZAR SERVICE"?"#ef4444":sv.flt<=50?"#f59e0b":"#22c55e";
     card.appendChild(mkSec("Horas Motor"));
-    card.appendChild(mkRowH("Horas Actuales",fh(sv.hs),"#f0fdf4"));
+    var rh=mk("div","dr");rh.style.background="#f0fdf4";
+    var lh=mk("span","lb");lh.textContent="Horas Actuales";rh.appendChild(lh);
+    var vh=mk("span","vl big");vh.textContent=fh(sv.hs);rh.appendChild(vh);card.appendChild(rh);
     card.appendChild(mkRow("Ult. Service",(sv.dult?ff(sv.dult):"--")+(sv.ult?" ("+fh(sv.ult)+")":"")));
-    var prxEl=mkEl("span");
-    var prxTxt=document.createTextNode(fh(sv.prx)+" • Faltan ");
-    var prxB=mkEl("b"); prxB.style.color=cc; prxB.textContent=sv.flt+" hs";
-    prxEl.appendChild(prxTxt); prxEl.appendChild(prxB);
-    var prxRow=mkEl("div","dr"); var lbP=mkEl("span","lb"); lbP.textContent="Prox. Service"; var vlP=mkEl("span","vl"); vlP.appendChild(prxEl); prxRow.appendChild(lbP); prxRow.appendChild(vlP); card.appendChild(prxRow);
-    card.appendChild(mkRow("Fecha ult. registro",sv.dt?ff(sv.dt):"--"));
+    var rp=mk("div","dr");
+    var lp=mk("span","lb");lp.textContent="Prox. Service";rp.appendChild(lp);
+    var vp=mk("span","vl");
+    var t1=document.createTextNode(fh(sv.prx)+" - Faltan ");vp.appendChild(t1);
+    var b=mk("b");b.style.color=cc;b.textContent=sv.flt+" hs";vp.appendChild(b);
+    rp.appendChild(vp);card.appendChild(rp);
+    card.appendChild(mkRow("Ult. registro",sv.dt?ff(sv.dt):"--"));
   }
-
-  // Seguridad
   var hE=eq.extintor&&eq.extintor.length>3;
   var hS=(eq.samaco_ult&&eq.samaco_ult.length>3)||(eq.samaco_prox&&eq.samaco_prox.length>3);
   if(hE||hS){
     card.appendChild(mkSec("Seguridad y Certificaciones"));
-    if(hE){
-      var extRow=mkEl("div","dr");
-      var lb=mkEl("span","lb"); lb.textContent="Venc. Extintores"; extRow.appendChild(lb);
-      var vl=mkEl("span","vl"); vl.appendChild(mkDot(eq.extintor));
-      var ft=document.createTextNode(ff(eq.extintor)); vl.appendChild(ft);
-      extRow.appendChild(vl); card.appendChild(extRow);
-    }
-    if(eq.samaco_ult&&eq.samaco_ult.length>3) card.appendChild(mkRow("Ult. SAMACO",ff(eq.samaco_ult)));
-    if(eq.samaco_prox&&eq.samaco_prox.length>3){
-      var spRow=mkEl("div","dr");
-      var lb2=mkEl("span","lb"); lb2.textContent="Prox. SAMACO"; spRow.appendChild(lb2);
-      var vl2=mkEl("span","vl"); vl2.appendChild(mkDot(eq.samaco_prox));
-      vl2.appendChild(document.createTextNode(ff(eq.samaco_prox)));
-      spRow.appendChild(vl2); card.appendChild(spRow);
-    }
+    if(hE){var re=mk("div","dr");var le=mk("span","lb");le.textContent="Venc. Extintores";re.appendChild(le);var ve=mk("span","vl");ve.appendChild(mkDotSpan(eq.extintor));ve.appendChild(document.createTextNode(ff(eq.extintor)));re.appendChild(ve);card.appendChild(re);}
+    if(eq.samaco_ult&&eq.samaco_ult.length>3)card.appendChild(mkRow("Ult. SAMACO",ff(eq.samaco_ult)));
+    if(eq.samaco_prox&&eq.samaco_prox.length>3){var rs=mk("div","dr");var ls=mk("span","lb");ls.textContent="Prox. SAMACO";rs.appendChild(ls);var vs=mk("span","vl");vs.appendChild(mkDotSpan(eq.samaco_prox));vs.appendChild(document.createTextNode(ff(eq.samaco_prox)));rs.appendChild(vs);card.appendChild(rs);}
   }
-
-  // Botones
-  var bc=mkEl("div","bc");
-  var a1=mkEl("a","btn bh");
-  a1.href=RU+"#equipo="+eq.id;
-  a1.setAttribute("data-eq",eq.id);
+  var bc=mk("div","bc");
+  var a1=mk("a","btn bh");a1.href=RU+"#equipo="+eq.id;
   a1.onclick=function(){sessionStorage.setItem("eq_filter",eq.id);};
-  a1.innerHTML="<span class="bi">&#128203;</span><div><div class="bt">Ver Historial de OTs</div><div class="bs">Reporte filtrado por "+eq.id+"</div></div>";
-  bc.appendChild(a1);
-  var a2=mkEl("a","btn bn");
-  a2.href=SF; a2.target="_blank";
-  a2.innerHTML="<span class="bi">&#10133;</span><div><div class="bt">Cargar OT Nueva</div><div class="bs">Registrar mantenimiento o falla</div></div>";
-  bc.appendChild(a2);
+  var a1i=mk("span","bi");a1i.innerHTML="&#128203;";a1.appendChild(a1i);
+  var a1d=mk("div");var a1t=mk("div","bt");a1t.textContent="Ver Historial de OTs";a1d.appendChild(a1t);
+  var a1s=mk("div","bs");a1s.textContent="Reporte filtrado por "+eq.id;a1d.appendChild(a1s);a1.appendChild(a1d);bc.appendChild(a1);
+  var a2=mk("a","btn bn");a2.href=SF;a2.target="_blank";
+  var a2i=mk("span","bi");a2i.innerHTML="&#10133;";a2.appendChild(a2i);
+  var a2d=mk("div");var a2t=mk("div","bt");a2t.textContent="Cargar OT Nueva";a2d.appendChild(a2t);
+  var a2s=mk("div","bs");a2s.textContent="Registrar mantenimiento o falla";a2d.appendChild(a2s);a2.appendChild(a2d);bc.appendChild(a2);
   card.appendChild(bc);
-
-  // Footer
-  var ft2=mkEl("div","ft");
-  ft2.innerHTML=eq.id+" &bull; "+(eq.grupo||"")+(eq.modelo?" &bull; "+eq.modelo:"")+"<br>Syngenta Field Equipment LAS";
-  card.appendChild(ft2);
-
+  var ft=mk("div","ft");ft.innerHTML=eq.id+" &bull; "+(eq.grupo||"")+(eq.modelo?" &bull; "+eq.modelo:"")+"<br>Syngenta Field Equipment LAS";card.appendChild(ft);
   wrap.appendChild(card);
 }
-
 (function(){
   var p=new URLSearchParams(window.location.search);
   var id=(p.get("eq")||"").toUpperCase().trim();
   var c=document.getElementById("C");
-  if(!id){
-    var nf=document.createElement("div"); nf.className="nf";
-    nf.innerHTML="<h2>Field Equipment</h2><p>Escane&aacute; el QR del equipo.</p>";
-    c.appendChild(nf); return;
-  }
+  if(!id){var nf=mk("div","nf");nf.innerHTML="<h2>Field Equipment</h2><p>Escane el QR del equipo.</p>";c.appendChild(nf);return;}
   document.title=id+" - Syngenta Field Equipment";
   var eq=(EQ||[]).find(function(e){return e.id===id;});
-  if(!eq){
-    var nf2=document.createElement("div"); nf2.className="nf";
-    nf2.innerHTML="<h2>No encontrado</h2><p>"+id+" no est&aacute; activo.</p>";
-    c.appendChild(nf2); return;
-  }
+  if(!eq){var nf2=mk("div","nf");nf2.innerHTML="<h2>No encontrado</h2><p>"+id+" no esta activo.</p>";c.appendChild(nf2);return;}
   show(eq,(SV||{})[id]||null);
 })();
 </script>

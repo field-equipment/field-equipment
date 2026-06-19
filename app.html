@@ -95,7 +95,7 @@ function render(eq,svc){
     +(eq.grupo?'<div class="data-row"><span class="lbl">Grupo</span><span class="val">'+eq.grupo+'</span></div>':"")
     +horasSection+segSection+'</div>'
     +'<div class="btn-container">'
-    +'<a href="'+REPORTE_URL+'#equipo='+eq.id+'" class="btn btn-h" onclick="localStorage.setItem('eq_filter',''+eq.id+'');return true;">'
+    +'<a href="'+REPORTE_URL+'#equipo='+eq.id+'" class="btn btn-h" onclick="localStorage.setItem('eq_filter',eq.id);return true;">'
     +'<span class="bi">📋</span><div><div class="bt">Ver Historial de OTs</div><div class="bs">Todo el reporte filtrado por '+eq.id+'</div></div></a>'
     +'<a href="'+SMARTSHEET_FORM+'" class="btn btn-n" target="_blank">'
     +'<span class="bi">➕</span><div><div class="bt">Cargar OT Nueva</div><div class="bs">Registrar nuevo mantenimiento o falla</div></div></a>'

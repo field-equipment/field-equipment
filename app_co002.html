@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-<title>CO002 · Syngenta Field Equipment</title>
+<title>Field Equipment · Syngenta</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:"Segoe UI",Arial,sans-serif;background:#f0f4f8;min-height:100vh}
@@ -27,16 +27,15 @@
   .btn{display:flex;align-items:center;gap:14px;padding:18px 20px;border-radius:14px;text-decoration:none;width:100%;text-align:left;cursor:pointer;border:none}
   .btn-h{background:#fff;border:2px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,.06)}
   .btn-n{background:linear-gradient(135deg,#f0c040,#d4a017)}
-  .btn-rep{background:linear-gradient(135deg,#1e40af,#2563eb)}
   .bi{font-size:1.8rem;flex-shrink:0}
   .bt{font-size:1rem;font-weight:700;color:#1e293b}
   .btn-n .bt{color:#1a1a00}
-  .btn-rep .bt,.btn-rep .bs{color:#fff}
   .bs{font-size:.75rem;color:#64748b;margin-top:2px}
   .btn-n .bs{color:rgba(0,0,0,.5)}
-  .btn-rep .bs{color:rgba(255,255,255,.75)}
   .footer{text-align:center;padding:16px;color:#94a3b8;font-size:.7rem;border-top:1px solid #f1f5f9}
   .chip{display:inline-block;background:rgba(255,255,255,.2);color:#fff;padding:2px 8px;border-radius:10px;font-size:.7rem;margin-top:4px}
+  .not-found{text-align:center;padding:60px 20px;color:#64748b}
+  .not-found h2{color:#1a5c2a;margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -48,71 +47,159 @@
   <span style="font-size:2rem">🌾</span>
 </div>
 
-<div class="card">
-  <div class="card-header">
-    <div class="equipo-icon">🌾</div>
-    <div>
-      <div class="equipo-id">CO002</div>
-      <div class="equipo-modelo">NEW HOLAND CR 5.85</div>
-      <div class="equipo-ub">📍 MORETTO</div>
-      <span class="chip">2020 · ENQ 58</span>
-    </div>
-  </div>
+<div id="app-content"></div>
 
-  <div class="sec">Identificación</div>
-  <div class="data-row"><span class="lbl">N° Serie Motor</span><span class="val">8066370</span></div>
-  <div class="data-row"><span class="lbl">N° Chasis</span><span class="val" style="font-size:.75rem">JHFY3585AKJF13825</span></div>
-  <div class="data-row"><span class="lbl">Usuario</span><span class="val">Ariel Gomez</span></div>
-  <div class="data-row"><span class="lbl">Sector</span><span class="val">TRIALING</span></div>
+<script>
+// ===== DATOS DE EQUIPOS =====
+var _EQ_DATA = [{"id":"CO002","ubic":"MORETTO","marca":"NEW HOLLAND","modelo":"CR 5.85","grupo":"COSECHADORAS","serie_m":"8066370","chasis":"JHFY3585AKJF13825","usuario":"Ariel Gomez","sector":"TRIALING","extintor":"2026-10-02","samaco_ult":"2026-03-06","anio":"2020","estado":"OK","hs_act":2100,"cond_hs":"OK","lat":0,"lon":0}];
+var _SVC_DATA = {"CO002":{"hs":2100,"dt":"2026-06-03","ult":2049,"dult":"2026-05-06","prx":2349,"flt":249,"cond":"OK"}};
+var SMARTSHEET_FORM = "https://app.smartsheet.com/b/form/4b718295a9fe4fa7bb893b3c54ce42ac";
+var REPORTE_URL = "https://field-equipment.github.io/field-equipment/reporte.html";
 
-  <div class="sec">Horas Motor</div>
-  <div class="data-row" style="background:#f0fdf4">
-    <span class="lbl">Horas Actuales</span>
-    <span class="val big">2,100 hs</span>
-  </div>
-  <div class="data-row"><span class="lbl">Últ. Service</span><span class="val">06/05/2026 (2,049 hs)</span></div>
-  <div class="data-row">
-    <span class="lbl">Próx. Service</span>
-    <span class="val" style="color:#22c55e">2,349 hs · Faltan 249 hs</span>
-  </div>
-  <div class="data-row"><span class="lbl">Fecha últ. registro</span><span class="val">03/06/2026</span></div>
+// Iconos por grupo
+var ICONS = {
+  "TRACTOR":"🚜","COSECHADORAS":"🌾","PULVERIZADOR":"💧",
+  "SEMBRADORA":"🌱","DRONES":"🚁","BALANZA":"⚖️",
+  "VARIOS":"🔧","DELVER":"⛏️","DEFAULT":"🔧"
+};
 
-  <div class="sec">Seguridad y Certificaciones</div>
-  <div class="data-row">
-    <span class="lbl">Extintores</span>
-    <span class="val"><span class="dot" style="background:#22c55e"></span>02/10/2026</span>
-  </div>
-  <div class="data-row"><span class="lbl">Últ. SAMACO</span><span class="val">06/03/2026</span></div>
-  <div class="data-row">
-    <span class="lbl">Próx. SAMACO</span>
-    <span class="val"><span class="dot" style="background:#22c55e"></span>06/03/2027</span>
-  </div>
-</div>
+function getIcon(grupo){return ICONS[grupo]||ICONS["DEFAULT"];}
 
-<div class="btn-container">
-  <a href="https://field-equipment.github.io/field-equipment/reporte.html#equipo=CO002" class="btn btn-h"
-     onclick="localStorage.setItem('eq_filter','CO002');return true;">
-    <span class="bi">📋</span>
-    <div>
-      <div class="bt">Ver Historial de OTs</div>
-      <div class="bs">Todo el reporte filtrado por CO002</div>
-    </div>
-  </a>
+function fmtHs(v){return v?Number(v).toLocaleString("es-AR")+" hs":"—";}
+function fmtFecha(v){return v&&v.length>=10?v.substring(8,10)+"/"+v.substring(5,7)+"/"+v.substring(0,4):"—";}
 
+function dotColor(fecha){
+  if(!fecha||fecha.length<10) return "#94a3b8";
+  var d=new Date(fecha); var now=new Date();
+  var diff=(d-now)/(1000*60*60*24);
+  return diff<0?"#ef4444":diff<60?"#f59e0b":"#22c55e";
+}
 
+function samacoProx(ult){
+  if(!ult||ult.length<10) return {fecha:"—",color:"#94a3b8"};
+  var d=new Date(ult);
+  d.setFullYear(d.getFullYear()+1);
+  var iso=d.toISOString().substring(0,10);
+  return {fecha:fmtFecha(iso),color:dotColor(iso)};
+}
 
-  <a href="https://app.smartsheet.com/b/form/4b718295a9fe4fa7bb893b3c54ce42ac" class="btn btn-n" target="_blank">
-    <span class="bi">➕</span>
-    <div>
-      <div class="bt">Cargar OT Nueva</div>
-      <div class="bs">Registrar nuevo mantenimiento o falla</div>
-    </div>
-  </a>
-</div>
+function render(eq, svc){
+  var icon=getIcon(eq.grupo||"");
+  var chip=(eq.anio?(eq.anio+" · "):"")+(eq.enq||"");
 
-<div class="footer">
-  CO002 · COSECHADORAS · NEW HOLAND CR 5.85<br>
-  Syngenta Field Equipment LAS
-</div>
+  // Horas Motor section - solo si tiene SVC
+  var horasSection="";
+  if(svc){
+    var condColor=svc.cond==="REALIZAR SERVICE"?"#ef4444":(svc.flt<=50?"#f59e0b":"#22c55e");
+    var proxTxt=svc.prx?(fmtHs(svc.prx)+" · Faltan <b style='color:"+condColor+"'>"+svc.flt+" hs</b>"):"—";
+    horasSection=
+      '<div class="sec">Horas Motor</div>'+
+      '<div class="data-row" style="background:#f0fdf4">'+
+        '<span class="lbl">Horas Actuales</span>'+
+        '<span class="val big">'+fmtHs(svc.hs)+'</span>'+
+      '</div>'+
+      '<div class="data-row">'+
+        '<span class="lbl">Últ. Service</span>'+
+        '<span class="val">'+(svc.dult?fmtFecha(svc.dult):"—")+(svc.ult?" ("+fmtHs(svc.ult)+")":"")+'</span>'+
+      '</div>'+
+      '<div class="data-row">'+
+        '<span class="lbl">Próx. Service</span>'+
+        '<span class="val">'+proxTxt+'</span>'+
+      '</div>'+
+      '<div class="data-row">'+
+        '<span class="lbl">Fecha últ. registro</span>'+
+        '<span class="val">'+(svc.dt?fmtFecha(svc.dt):"—")+'</span>'+
+      '</div>';
+  }
+
+  // Seguridad section - solo si tiene datos
+  var segSection="";
+  var hasExt=eq.extintor&&eq.extintor.length>3;
+  var hasSam=eq.samaco_ult&&eq.samaco_ult.length>3;
+  if(hasExt||hasSam){
+    var samProx=samacoProx(eq.samaco_ult);
+    segSection='<div class="sec">Seguridad y Certificaciones</div>';
+    if(hasExt){
+      segSection+=
+        '<div class="data-row">'+
+          '<span class="lbl">Extintores</span>'+
+          '<span class="val"><span class="dot" style="background:'+dotColor(eq.extintor)+'"></span>'+fmtFecha(eq.extintor)+'</span>'+
+        '</div>';
+    }
+    if(hasSam){
+      segSection+=
+        '<div class="data-row">'+
+          '<span class="lbl">Últ. SAMACO</span>'+
+          '<span class="val">'+fmtFecha(eq.samaco_ult)+'</span>'+
+        '</div>'+
+        '<div class="data-row">'+
+          '<span class="lbl">Próx. SAMACO</span>'+
+          '<span class="val"><span class="dot" style="background:'+samProx.color+'"></span>'+samProx.fecha+'</span>'+
+        '</div>';
+    }
+  }
+
+  return (
+    '<div class="card">'+
+      '<div class="card-header">'+
+        '<div class="equipo-icon">'+icon+'</div>'+
+        '<div>'+
+          '<div class="equipo-id">'+eq.id+'</div>'+
+          '<div class="equipo-modelo">'+(eq.marca||"")+(eq.modelo?" · "+eq.modelo:"")+'</div>'+
+          '<div class="equipo-ub">📍 '+(eq.ubic||"—")+'</div>'+
+          (chip?'<span class="chip">'+chip+'</span>':"")+
+        '</div>'+
+      '</div>'+
+
+      '<div class="sec">Identificación</div>'+
+      (eq.serie_m?'<div class="data-row"><span class="lbl">N° Serie Motor</span><span class="val">'+eq.serie_m+'</span></div>':"")+
+      (eq.chasis?'<div class="data-row"><span class="lbl">N° Chasis</span><span class="val" style="font-size:.75rem">'+eq.chasis+'</span></div>':"")+
+      (eq.usuario?'<div class="data-row"><span class="lbl">Usuario</span><span class="val">'+eq.usuario+'</span></div>':"")+
+      (eq.sector?'<div class="data-row"><span class="lbl">Sector</span><span class="val">'+eq.sector+'</span></div>':"")+
+      (eq.grupo?'<div class="data-row"><span class="lbl">Grupo</span><span class="val">'+eq.grupo+'</span></div>':"")+
+
+      horasSection+
+      segSection+
+    '</div>'+
+
+    '<div class="btn-container">'+
+      '<a href="'+REPORTE_URL+'#equipo='+eq.id+'" class="btn btn-h" onclick="localStorage.setItem('eq_filter',''+eq.id+'');return true;">'+
+        '<span class="bi">📋</span>'+
+        '<div><div class="bt">Ver Historial de OTs</div><div class="bs">Todo el reporte filtrado por '+eq.id+'</div></div>'+
+      '</a>'+
+      '<a href="'+SMARTSHEET_FORM+'" class="btn btn-n" target="_blank">'+
+        '<span class="bi">➕</span>'+
+        '<div><div class="bt">Cargar OT Nueva</div><div class="bs">Registrar nuevo mantenimiento o falla</div></div>'+
+      '</a>'+
+    '</div>'+
+
+    '<div class="footer">'+
+      eq.id+' · '+(eq.grupo||"")+(eq.modelo?" · "+eq.modelo:"")+
+      '<br>Syngenta Field Equipment LAS'+
+    '</div>'
+  );
+}
+
+// ===== INIT =====
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  var eqId=(params.get("eq")||"").toUpperCase().trim();
+  var content=document.getElementById("app-content");
+
+  if(!eqId){
+    content.innerHTML='<div class="not-found"><h2>Field Equipment</h2><p>Escaneá el QR de un equipo para ver su información.</p></div>';
+    return;
+  }
+
+  document.title=eqId+" · Syngenta Field Equipment";
+  var eq=(_EQ_DATA||[]).find(function(e){return e.id===eqId;});
+  if(!eq){
+    content.innerHTML='<div class="not-found"><h2>Equipo no encontrado</h2><p>'+eqId+' no está registrado o no está activo.</p></div>';
+    return;
+  }
+  var svc=(_SVC_DATA||{})[eqId]||null;
+  content.innerHTML=render(eq,svc);
+})();
+</script>
 </body>
 </html>

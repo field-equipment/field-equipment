@@ -135,7 +135,8 @@ if(!droneForms[droneKey] && /^LV\d+$/.test(droneKey)){
   var c=document.getElementById("C");
   if(!id){var nf=mk("div","nf");nf.innerHTML="<h2>Field Equipment</h2><p>Escane el QR del equipo.</p>";c.appendChild(nf);return;}
   document.title=id+" - Syngenta Field Equipment";
-  var eq=(EQ||[]).find(function(e){return e.id===id;});
+  function compararEquipo(v){return (v||"").replace(/-+$/,"");}
+var eq=(EQ||[]).find(function(e){return compararEquipo(e.id)===compararEquipo(id);});
   if(!eq){var nf2=mk("div","nf");nf2.innerHTML="<h2>No encontrado</h2><p>"+id+" no esta activo.</p>";c.appendChild(nf2);return;}
   show(eq,(SV||{})[id]||null);
 })();

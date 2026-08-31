@@ -110,7 +110,11 @@ function show(eq,sv){
   var a2d=mk("div");var a2t=mk("div","bt");a2t.textContent="Cargar OT Nueva";a2d.appendChild(a2t);
   var a2s=mk("div","bs");a2s.textContent="Registrar mantenimiento o falla";a2d.appendChild(a2s);a2.appendChild(a2d);bc.appendChild(a2);
   var droneForms={"LVR1347":"https://app.smartsheet.com/b/form/02a70a914bb94e4a815e376d16703af2","ARVNT3671":"https://app.smartsheet.com/b/form/4b01c3ac4d8e484a92cfee27d84799ee","ARVNT3670":"https://app.smartsheet.com/b/form/69d114a1abdf41988f54720059902603","ARVNT3962":"https://app.smartsheet.com/b/form/ed31c496537e4a05b6585799eb659127","ARVNT3961":"https://app.smartsheet.com/b/form/975ca69e6a304612abd1091c871ee774","ARVNT3684":"https://app.smartsheet.com/b/form/a3843b5ca4124601a9ab73bc0cd19f7f","ARVNT3669":"https://app.smartsheet.com/b/form/059fd8a6c0254595908ec7fa9a34730a","ARVNT3965":"https://app.smartsheet.com/b/form/15ba9e74d5cf4fb59766a21159123700","ARVNT3964":"https://app.smartsheet.com/b/form/8008216b87d24512a0d9ce8f26fcbb40","ARVNT3963":"https://app.smartsheet.com/b/form/019fa51b080671db9abca6bbc98433cc","LVR1348":"https://app.smartsheet.com/b/form/e3f046215e8e486a90b5fc74177fe012","LVR1349":"https://app.smartsheet.com/b/form/93a07cf7c1ec4dd4ae93aae5d34902f2","LVR3077":"https://app.smartsheet.com/b/form/08885bca3cf44fab89f5244f0fc4a756","LVR3078":"https://app.smartsheet.com/b/form/57678d79c3e24a168d899e36034ca8ea","LVR3239":"https://app.smartsheet.com/b/form/646afe386b994193bb304b624fcd1906","LVR3240":"https://app.smartsheet.com/b/form/947d044d06a64de588c5f3947e07e367"};
-  var droneKey=(eq.id||"").toUpperCase().replace(/[^A-Z0-9]/g,"").replace(/^DR/,"");
+var droneKey=(eq.id||"").toUpperCase().replace(/[^A-Z0-9]/g,"").replace(/^DR/,"");
+
+if(!droneForms[droneKey] && /^LV\d+$/.test(droneKey)){
+  droneKey=droneKey.replace(/^LV/,"LVR");
+}
   var droneForm=droneForms[droneKey];
   if(droneForm){
     var a3=mk("a","btn bd");

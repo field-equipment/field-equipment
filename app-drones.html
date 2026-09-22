@@ -51,6 +51,7 @@ var SV={"CO001":{"hs":1850,"dt":"2026-05-19","ult":1739,"dult":"2025-05-19","prx
 var SF="https://app.smartsheet.com/b/form/4b718295a9fe4fa7bb893b3c54ce42ac";
 var RU="https://field-equipment.github.io/field-equipment/reporte.html";
 var IC={"TRACTOR":"&#128668;","COSECHADORAS":"&#127806;","PULVERIZADOR":"&#128167;","SEMBRADORA":"&#127793;","DRONES":"&#128641;","BALANZA":"&#9878;","VARIOS":"&#128295;","DEFAULT":"&#128295;"};
+EQ.push({"id":"SE031","ubic":"MORETTO","marca":"PENDIENTE","modelo":"PENDIENTE","hs_act":0,"cond_hs":"OK","grupo":"SEMBRADORA","estado":"OK","serie_m":"","chasis":"","usuario":"","sector":"TRIALING","extintor":"","samaco_ult":"","samaco_prox":"","anio":"","lat":-33.7,"lon":-62.05}); 
 function gi(g){return IC[g]||IC.DEFAULT;}
 function fh(v){return v?Number(v).toLocaleString("es-AR")+" hs":"--";}
 function ff(v){if(!v||v.length<10)return "--";return v.substring(8,10)+"/"+v.substring(5,7)+"/"+v.substring(0,4);}

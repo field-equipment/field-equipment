@@ -51,7 +51,6 @@ var SV={"CO001":{"hs":1850,"dt":"2026-05-19","ult":1739,"dult":"2025-05-19","prx
 var SF="https://app.smartsheet.com/b/form/4b718295a9fe4fa7bb893b3c54ce42ac";
 var RU="https://field-equipment.github.io/field-equipment/reporte.html";
 var IC={"TRACTOR":"&#128668;","COSECHADORAS":"&#127806;","PULVERIZADOR":"&#128167;","SEMBRADORA":"&#127793;","DRONES":"&#128641;","BALANZA":"&#9878;","VARIOS":"&#128295;","DEFAULT":"&#128295;"};
-EQ.push({"id":"SE031","ubic":"MORETTO","marca":"PENDIENTE","modelo":"PENDIENTE","hs_act":0,"cond_hs":"OK","grupo":"SEMBRADORA","estado":"OK","serie_m":"","chasis":"","usuario":"","sector":"TRIALING","extintor":"","samaco_ult":"","samaco_prox":"","anio":"","lat":-33.7,"lon":-62.05}); 
 function gi(g){return IC[g]||IC.DEFAULT;}
 function fh(v){return v?Number(v).toLocaleString("es-AR")+" hs":"--";}
 function ff(v){if(!v||v.length<10)return "--";return v.substring(8,10)+"/"+v.substring(5,7)+"/"+v.substring(0,4);}
@@ -130,13 +129,22 @@ if(!droneForms[droneKey] && /^LV\d+$/.test(droneKey)){
   var ft=mk("div","ft");ft.innerHTML=eq.id+" &bull; "+(eq.grupo||"")+(eq.modelo?" &bull; "+eq.modelo:"")+"<br>Syngenta Field Equipment LAS";card.appendChild(ft);
   wrap.appendChild(card);
 }
-(function(){
+(async function(){
   var p=new URLSearchParams(window.location.search);
   var id=(p.get("eq")||"").toUpperCase().trim();
   var c=document.getElementById("C");
   if(!id){var nf=mk("div","nf");nf.innerHTML="<h2>Field Equipment</h2><p>Escane el QR del equipo.</p>";c.appendChild(nf);return;}
   document.title=id+" - Syngenta Field Equipment";
-  function compararEquipo(v){return (v||"").replace(/-+$/,"");}
+  try{
+  var datos=await fetch("equipos.json?ts="+Date.now()).then(function(r){
+    if(!r.ok)throw new Error("No se pudo leer equipos.json");
+    return r.json();
+  });
+  EQ=datos.E||EQ;
+  SV=datos.SVC||SV;
+}catch(err){
+  console.warn("No se pudo cargar equipos.json; se usan los datos locales.",err);
+}function compararEquipo(v){return (v||"").toUpperCase().replace(/[\s-]+/g,"");}
 var eq=(EQ||[]).find(function(e){return compararEquipo(e.id)===compararEquipo(id);});
   if(!eq){var nf2=mk("div","nf");nf2.innerHTML="<h2>No encontrado</h2><p>"+id+" no esta activo.</p>";c.appendChild(nf2);return;}
   show(eq,(SV||{})[id]||null);
